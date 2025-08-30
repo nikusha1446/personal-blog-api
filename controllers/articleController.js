@@ -64,4 +64,23 @@ const updateArticle = async (req, res) => {
   }
 };
 
-module.exports = { createArticle, getArticles, getArticle, updateArticle };
+const deleteArticle = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await prisma.article.delete({
+      where: { id },
+    });
+    res.json({ message: 'Article deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to delete article' });
+  }
+};
+
+module.exports = {
+  createArticle,
+  getArticles,
+  getArticle,
+  updateArticle,
+  deleteArticle,
+};
