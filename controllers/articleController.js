@@ -27,4 +27,22 @@ const getArticles = async (req, res) => {
   }
 };
 
-module.exports = { createArticle, getArticles };
+const getArticle = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const article = await prisma.article.findUnique({
+      where: { id },
+    });
+
+    if (!article) {
+      return res.status(404).json({ error: 'Article not found' });
+    }
+
+    res.json(article);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve article' });
+  }
+};
+
+module.exports = { createArticle, getArticles, getArticle };
