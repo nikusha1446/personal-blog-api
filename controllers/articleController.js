@@ -45,4 +45,23 @@ const getArticle = async (req, res) => {
   }
 };
 
-module.exports = { createArticle, getArticles, getArticle };
+const updateArticle = async (req, res) => {
+  const { id } = req.params;
+  const { title, content, tags } = req.body;
+
+  try {
+    const updatedArticle = await prisma.article.update({
+      where: { id },
+      data: {
+        title,
+        content,
+        tags,
+      },
+    });
+    res.json(updatedArticle);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to update article' });
+  }
+};
+
+module.exports = { createArticle, getArticles, getArticle, updateArticle };
